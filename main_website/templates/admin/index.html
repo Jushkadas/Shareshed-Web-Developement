@@ -1,0 +1,171 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static %}
+
+{% block extrastyle %}{{ block.super }}<link rel="stylesheet" href="{% static 'admin/css/index.css' %}">{% endblock %}
+
+{% block coltype %}colMS{% endblock %}
+
+{% block bodyclass %}{{ block.super }} dashboard{% endblock %}
+
+{% block breadcrumbs %}{% endblock %}
+
+{% block title %}Dashboard{% endblock %}
+{% block content_title %}{% if title %}<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-1 mb-3 border-bottom">
+    <h1 class="h1">Dashboard</h1>
+    <!-- <div class="btn-toolbar pb-0 mb-0 mb-md-0">
+        <div class="btn-group">
+            <button class="btn btn-sm btn-outline-secondary pt-1 pb-1">Share</button>
+            <button class="btn btn-sm btn-outline-secondary pt-1 pb-1">Export</button>
+        </div>
+    </div> -->
+</div>{% endif %}{% endblock %}
+
+{% block content %}
+<div id="content-main">
+
+    <div class="card-deck">
+        <div class="card border-warning">
+            <div class="card-body pt-3 pb-1">
+                <div class="row">
+                    <div class="col-md-4">
+                        <i class="fas fa-shopping-basket fa-3x text-warning"></i>
+                    </div>
+                    <div class="col-md-8">
+                       TODAY
+                        <h2 class="pt-1"> {{ today }} </h2>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer pt-1 pb-1">
+                <a href="{% url 'admin:index'%}main_website/lending/?productStatus__in=COLLECTTODAY,RETURNTODAY" class="fontb d-flex justify-content-center text-muted">View List</a>
+            </div>
+        </div>
+        <div class="card border-success">
+            <div class="card-body pt-3 pb-1">
+                <div class="row">
+                    <div class="col-md-4">
+                        <i class="fas fa-shopping-basket fa-3x text-success"></i>
+                    </div>
+                    <div class="col-md-8">
+                        ON LOAN
+                        <h2 class="pt-1"> {{ onloan }} </h2>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer pt-1 pb-1">
+                <a href="{% url 'admin:index'%}main_website/lending/?productStatus__exact=ONLOAN" class="fontb d-flex justify-content-center text-muted">View List</a>
+            </div>
+        </div>
+        <div class="card border-danger">
+            <div class="card-body pt-3 pb-1">
+                <div class="row">
+                    <div class="col-md-4">
+                        <i class="fas fa-shopping-basket fa-3x text-danger"></i>
+                    </div>
+                    <div class="col-md-8">
+                        OVERDUE
+                        <h2 class="pt-1"> {{ overdue }} </h2>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer pt-1 pb-1">
+                <a href="{% url 'admin:index'%}main_website/lending/?productStatus__in=COLLECTLATE,RETURNLATE" class="fontb d-flex justify-content-center text-muted">View List</a>
+            </div>
+        </div>
+        <div class="card border-info">
+            <div class="card-body pt-3 pb-1">
+                <div class="row">
+                    <div class="col-md-4">
+                        <i class="fas fa-shopping-basket fa-3x text-info"></i>
+                    </div>
+                    <div class="col-md-8">
+                        RESERVATIONS
+                        <h2 class="pt-1"> {{ reserved }} </h2>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer pt-1 pb-1">
+                <a href="{% url 'admin:index'%}main_website/lending/?productStatus__exact=RESERVED" class="fontb d-flex justify-content-center text-muted">View List</a>
+            </div>
+        </div>
+    </div>
+
+    <section class="section-divider">
+      <h3 class="h3">Order Notes</h3>
+      {% if notes|length > 0 %}
+      <table>
+        <tr>
+          <td> User </td>
+          <td> Message </td>
+          <td> Created On </td>
+        </tr>
+
+        {% for items in notes %}
+        <tr>
+          <td> {{ items.user }} </td>
+          <td> {{ items.message }} </td>
+          <td> {{ items.added_on }} </td>
+        </tr>
+
+        {% endfor %}
+      </table>
+      {% else %}
+        <p>
+          There is no Order Note
+        </p>
+      {% endif %}
+      <a class="btn btn-default" href="/admin/main_website/ordernote/add/">Add Note</a>
+      <a class="btn btn-default" href="/admin/main_website/ordernote/">View All</a>
+      <hr/>
+    </section>
+
+    <section class="section-divider">
+      <h3 class="h3">Collect Today</h3>
+      <table>
+        <tr>
+          <td> Product </td>
+          <td> User </td>
+          <td> Start Date </td>
+          <td> End Date </td>
+        </tr>
+
+        {% for loan in collect_today %}
+        <tr>
+          <td> {{ loan.product_id }} </td>
+          <td> {{ loan.user_id }} </td>
+          <td> {{ loan.start_date }} </td>
+          <td> {{ loan.end_date }} </td>
+        </tr>
+
+        {% endfor %}
+      </table>
+      <hr/>
+    </section>
+
+    <section class="section-divider">
+      <h3 class="h3">Return Today</h3>
+      <table>
+        <tr>
+          <td> Product </td>
+          <td> User </td>
+          <td> Start Date </td>
+          <td> End Date </td>
+        </tr>
+
+        {% for loan in return_today %}
+        <tr>
+          <td> {{ loan.product_id }} </td>
+          <td> {{ loan.user_id }} </td>
+          <td> {{ loan.start_date }} </td>
+          <td> {{ loan.end_date }} </td>
+        </tr>
+
+        {% endfor %}
+      </table>
+      <hr/>
+    </section>
+
+</div>
+
+
+{% endblock %}
