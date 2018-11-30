@@ -1,4 +1,4 @@
-This is the repository of team Sunshine - DECO3801
+This is the repository of the web development of Shareshed.
 
 The repository will be used for the ShareShed Project.
 
